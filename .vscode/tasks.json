@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and run current file",
+            "type": "shell",
+            "command": "mkdir -p '${fileDirname}/build' && g++ -std=c++20 -Wall -Wextra -g -fsanitize=address,undefined '${file}' -o '${fileDirname}/build/${fileBasenameNoExtension}' && '${fileDirname}/build/${fileBasenameNoExtension}'",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "clear": true,
+                "focus": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
