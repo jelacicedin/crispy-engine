@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug current file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${fileDirname}",
+            "MIMode": "lldb",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "preLaunchTask": "Build current file"
+        },
+        {
+            "name": "Debug CMake project (current folder)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/build/${fileDirnameBasename}",
+            "args": [],
+            "cwd": "${fileDirname}",
+            "MIMode": "lldb",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "preLaunchTask": "CMake build current folder"
+        }
+    ]
+}

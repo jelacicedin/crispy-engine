@@ -1,2 +1,6 @@
+# Flags for the single-file programs in sandbox/. CMake projects (folders with
+# their own CMakeLists.txt) get exact flags from build/compile_commands.json.
+If:
+  PathExclude: modularity/.*
 CompileFlags:
-  Add: [-std=c++20, -Wall, -Wextra]
+  Add: [-std=c++20, -Wall, -Wextra, -fcxx-modules]

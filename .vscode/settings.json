@@ -1,0 +1,5 @@
+{
+    // Homebrew's clangd matches the Homebrew clang used by the CMake projects.
+    "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
+    "cmake.sourceDirectory": "/Users/edinjelacic/Developer/crispy-engine/sandbox/modularity"
+}
