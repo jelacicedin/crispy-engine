@@ -6,6 +6,7 @@ public:
   double &operator[](int i);
   const double &operator[](int i) const;
   int size() const;
+  ~Vector() {delete[] elem;}
 
 private:
   double *elem;

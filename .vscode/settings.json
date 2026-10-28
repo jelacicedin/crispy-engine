@@ -1,5 +1,5 @@
 {
-    // Homebrew's clangd matches the Homebrew clang used by the CMake projects.
-    "clangd.path": "/opt/homebrew/opt/llvm/bin/clangd",
-    "cmake.sourceDirectory": "/Users/edinjelacic/Developer/crispy-engine/sandbox/modularity"
+    // clangd can't read GCC's compiled modules; this lets it build `import std` / `import Vector` itself.
+    "clangd.arguments": ["--experimental-modules-support"],
+    "cmake.sourceDirectory": "${workspaceFolder}/sandbox/modularity"
 }

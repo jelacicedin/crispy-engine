@@ -10,11 +10,10 @@ double sqrt_sum(Vector &v) {
   return sum;
 }
 
-
 int main() {
-    Vector v(5);
-    for (int i = 0; i!=5; i++) {
-        std::cin >> v[i];
-    }
-    std::cout << sqrt_sum(v);
+  Vector v(5);
+  for (int i = 0; i != 5; i++) {
+    std::cin >> v[i];
+  }
+  std::cout << sqrt_sum(v) << std::endl;
 }
