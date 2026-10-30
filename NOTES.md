@@ -9,3 +9,6 @@
 30.10.2026 - In Tour of C++ ch. 6 (essential operations), at 6.2 (copy and move). This is the chapter that makes the Tensor tractable: constructors/destructors and RAII, then value semantics, resource handling and operator overloading. Plan is to start serious engine work once ch. 6 is done.
 sandbox/demo_autograd.cpp is a throwaway on the side -- 213 lines of reverse-mode autodiff (op set is just + - * / exp, tanh composed from exp), gradient-checked against central differences and trained on XOR -- written to answer "how hard would gradients be?", not part of the project.
 Next: finish ch. 6, then the engine skeleton (CMake + GoogleTest via FetchContent, -fsanitize=address,undefined debug config), then the Tensor (shape, strides, offset, shared_ptr<Storage>, Rule of Zero).
+
+30.10.2026 - Tour of C++ ch. 6, now at 6.4. sandbox/modularity/vector.cpp has the copy constructor, copy assignment and move constructor; move assignment is declared but not defined yet. Added .clang-format (LLVM style, 4-space indent), which clangd uses for formatting.
+Next: define move assignment, finish ch. 6, then the engine skeleton as above.
