@@ -1,3 +1,6 @@
+//
+// Created by edinj on 2026-11-08.
+//
 import json;
 import std;
 import errors;
@@ -37,7 +40,7 @@ struct TensorInfo {
 };
 
 class SafeTensorsLoader {
-    std::vector<std::byte> tensor_container_;
+    std::vector<std::byte> tensor_bytes_container_;
     std::string filepath_;
     std::uint64_t header_len_ = 0;
     std::streamsize total_len_ = 0;
@@ -106,11 +109,12 @@ public:
 
             // Tensors-only length
             tensors_data_len_ = total_len_ - header_len_ - sizeof(header_len_);
+
             // Load container
-            tensor_container_.resize(tensors_data_len_);
+            tensor_bytes_container_.resize(tensors_data_len_);
             auto tensors_start_ = header_len_ + sizeof(header_len_);
-            f.seekg(tensors_start_, std::ios::beg);
-            f.read(reinterpret_cast<char *>(tensor_container_.data()),
+            f.seekg(static_cast<long>(tensors_start_), std::ios::beg);
+            f.read(reinterpret_cast<char *>(tensor_bytes_container_.data()),
                    tensors_data_len_);
             if (f.gcount() != tensors_data_len_)
                 throw std::runtime_error{"Truncated tensor data"};
@@ -118,6 +122,26 @@ public:
             std::throw_with_nested(
                 std::runtime_error{"Cannot read file: " + filepath_});
         }
+    }
+    TensorView getTensor(const std::string &name) {
+        // Seek through the unordered map
+        auto tensor_it = tensors_.find(name);
+        if (tensor_it == tensors_.end()) {
+            throw std::runtime_error{"Could not find tensor \"" + name + "\""};
+        }
+        const TensorInfo &tensor_info = tensor_it->second; // Getting the value
+        // Sanity check for tensor data lengths
+        if (tensor_info.end < tensor_info.begin ||
+            tensor_info.end > tensor_bytes_container_.size())
+            throw std::runtime_error{"Bad data_offsets for " + name};
+
+        // Get a pointer to the relevant data start and length via slicing
+        auto tensor_data =
+            std::span<const std::byte>{tensor_bytes_container_}.subspan(
+                tensor_info.begin, tensor_info.end - tensor_info.begin);
+
+        return TensorView{parse_dtype(tensor_info.dtype), tensor_info.shape,
+                          tensor_data};
     }
 };
 } // namespace
@@ -128,6 +152,30 @@ int main(int argc, char **argv) {
 
     try {
         SafeTensorsLoader loader{filepath, 2, true};
+
+        // 1. A known tensor has the right dtype, shape and byte size
+        auto [dtype, shape, data] = loader.getTensor("wte.weight");
+        if (dtype != DType::F32)
+            throw std::runtime_error{"wte: wrong dtype"};
+        if (shape != std::vector<std::size_t>{50257, 768})
+            throw std::runtime_error{"wte: wrong shape"};
+        if (data.size() != 50257 * 768 * size_of(DType::F32))
+            throw std::runtime_error{"wte: wrong byte size"};
+
+        // 2. The bytes look like real floats: print the first few
+        std::array<float, 5> first{};
+        std::memcpy(first.data(), data.data(), sizeof first);
+        std::println("wte[0][:5] = {}", first);
+
+        // 3. A missing name throws
+        try {
+            loader.getTensor("does.not.exist");
+            throw std::logic_error{"missing tensor did not throw"};
+        } catch (const std::runtime_error &) {
+            // expected
+        }
+
+        std::println("smoke test OK");
     } catch (const std::exception &e) {
         print_exception(e);
     }

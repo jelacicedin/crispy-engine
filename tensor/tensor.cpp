@@ -40,7 +40,7 @@ export constexpr std::size_t size_of(const DType t) {
 
 
 
-struct TensorView {
+export struct TensorView {
     DType dtype;
     std::vector<std::size_t> shape;
     std::span<const std::byte> data; // points into tensor_container_
