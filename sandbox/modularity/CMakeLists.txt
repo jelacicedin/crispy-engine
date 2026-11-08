@@ -13,3 +13,7 @@ set(CMAKE_CXX_MODULE_STD ON)
 add_executable(modularity user.cpp)
 target_sources(modularity PUBLIC FILE_SET CXX_MODULES FILES vector.cpp)
 target_compile_options(modularity PRIVATE -Wall -Wextra)
+
+add_executable(move_demo move_demo.cpp)
+target_sources(move_demo PUBLIC FILE_SET CXX_MODULES FILES vector.cpp)
+target_compile_options(move_demo PRIVATE -Wall -Wextra)

@@ -69,3 +69,7 @@ Testing/
 
 # Downloaded model weights (fetch with scripts/fetch_gpt2.sh)
 models/
+
+# IDE
+.idea/
+cmake-build-*/

@@ -1,6 +1,5 @@
+import std;
 import Vector;
-#include <cmath>
-#include <iostream>
 
 double sqrt_sum(Vector &v) {
   double sum = 0;
